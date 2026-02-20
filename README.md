@@ -1,164 +1,119 @@
 # AI Manus Unified
 
-> **Unified AI Agent Enterprise Platform** - A production-ready, modular, and scalable AI orchestration platform that merges the best of [ai-manus](https://github.com/simpleyyt/ai-manus) and [syria-ai-manus](https://github.com/sadadonline17-oss/syria-ai-manus).
+<div align="center">
+
+![AI Manus Unified](https://img.shields.io/badge/AI%20Manus-Unified-6366f1?style=for-the-badge&labelColor=1e1e2e)
+
+**Visual Workflow Automation Platform**
+
+*A powerful AI-powered workflow automation platform combining the best of ai-manus and syria-ai-manus*
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node](https://img.shields.io/badge/Node-20%2B-green)](https://nodejs.org)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-blue)](https://python.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-blue)](https://www.typescriptlang.org/)
+
+</div>
+
+---
 
 ## 🚀 Features
 
-### Multi-Provider Support
-- **OpenAI** - GPT-4o, GPT-4 Turbo, o1, o3-mini
-- **Anthropic** - Claude 3.5 Sonnet, Claude 3 Opus, Claude 3 Haiku
-- **Google** - Gemini 2.0 Flash, Gemini 1.5 Pro
-- **DeepSeek** - DeepSeek Chat, DeepSeek Reasoner
-- **Groq** - Llama, Mixtral (high-speed inference)
-- **Mistral** - Mistral Large, Mistral Medium
-- **xAI** - Grok models
-- **Cohere** - Command R+, Command R
-- **OpenRouter** - Access to 100+ models
-- **Ollama** - Local LLM support
-- **LMStudio** - Local model support
-- **Together AI**, **Perplexity**, **HuggingFace**, **Moonshot**, **Hyperbolic**, **GitHub Models**, **Amazon Bedrock**
+### 🧠 Multi-Provider AI Support
+- **17+ AI Providers**: OpenAI, Anthropic, Google, DeepSeek, Groq, Mistral, xAI, Cohere, OpenRouter, and more
+- **Local AI Support**: Ollama, LMStudio for offline AI capabilities
+- **Dynamic Model Selection**: Automatically route to the best model for each task
 
-### Tool System
-- **Shell Tools** - Execute commands in sandbox environment
-- **File Tools** - Read, write, search, and manage files
-- **Browser Tools** - Navigate, click, input, screenshot
-- **Search Tools** - Web search with Google, Bing, Baidu
+### 🔄 Visual Workflow Builder
+- **Drag-and-Drop Interface**: React Flow powered canvas for intuitive workflow design
+- **20+ Pre-built Skills**: Browser automation, code execution, file management, HTTP requests
+- **n8n Import**: Import and convert n8n workflows to Manus format
+- **Real-time Execution**: Watch workflows execute with live status updates
 
-### Orchestrator
-- **Auto Provider Routing** - Intelligent provider selection
-- **Failover Support** - Automatic fallback between providers
-- **Retry with Backoff** - Resilient error handling
-- **Health Monitoring** - Real-time provider health checks
-- **Cost-Aware Routing** - Optimize for cost efficiency
-- **Region-Based Routing** - Geographic optimization
+### ⚡ High-Performance Execution
+- **DAG Engine**: Parallel and sequential node execution
+- **Streaming Updates**: Server-Sent Events for real-time progress
+- **Error Handling**: Automatic retry with exponential backoff
+- **Timeout Management**: Configurable timeouts per skill
 
-## 📁 Project Structure
+### 🔌 MCP Tool Integration
+- **Filesystem**: Read, write, and manage files
+- **Database**: SQLite, PostgreSQL, MongoDB support
+- **HTTP**: Make requests to external APIs
+- **Shell**: Execute commands in sandboxed environment
+- **Browser**: Playwright-powered browser automation
 
-```
-ai-manus-unified/
-├── src/
-│   ├── providers/          # AI provider implementations
-│   │   ├── interface.ts    # Provider interface contract
-│   │   ├── registry.ts     # Dynamic provider registration
-│   │   ├── openai.ts       # OpenAI provider
-│   │   ├── anthropic.ts    # Anthropic provider
-│   │   ├── additional.ts   # All other providers
-│   │   └── index.ts        # Provider initialization
-│   ├── tools/              # Tool implementations
-│   │   ├── interface.ts    # Tool interface contract
-│   │   ├── registry.ts     # Dynamic tool registration
-│   │   ├── shell.ts        # Shell execution tools
-│   │   ├── file.ts         # File operation tools
-│   │   ├── browser.ts      # Browser automation tools
-│   │   ├── search.ts       # Web search tools
-│   │   └── index.ts        # Tool initialization
-│   ├── orchestrator/       # Provider orchestration
-│   │   └── index.ts        # Routing, failover, health
-│   ├── agent/              # Agent runtime
-│   │   ├── base.ts         # Base agent implementation
-│   │   └── index.ts        # Agent factory
-│   ├── config/             # Configuration management
-│   │   └── index.ts        # Config loader & validation
-│   ├── types/              # TypeScript definitions
-│   │   └── index.ts        # All type definitions
-│   └── index.ts            # Main server entry point
-├── .github/workflows/      # CI/CD pipelines
-│   └── ci.yml              # Build, test, deploy
-├── Dockerfile              # Multi-stage Docker build
-├── docker-compose.yml      # Full stack deployment
-├── package.json            # Dependencies & scripts
-├── tsconfig.json           # TypeScript configuration
-└── .env.example            # Environment template
-```
+### 🐳 Production Ready
+- **Docker Support**: Multi-stage Dockerfile for minimal image size
+- **Docker Compose**: Complete stack with MongoDB, Redis, and sandbox
+- **Health Checks**: Built-in health monitoring
+- **Horizontal Scaling**: Stateless design for easy scaling
 
-## 🏃 Quick Start
+---
+
+## 📦 Installation
 
 ### Prerequisites
-- Node.js 20+ or Bun
-- Docker (optional, for containerized deployment)
+- Node.js 20+
+- Python 3.11+
+- Docker & Docker Compose (optional)
 
-### Installation
+### Quick Start
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/your-username/ai-manus-unified.git
 cd ai-manus-unified
-
-# Install dependencies
-npm install
 
 # Copy environment file
 cp .env.example .env
 
-# Edit .env and add your API keys
+# Edit .env with your API keys
 nano .env
 
-# Build the project
-npm run build
-
-# Start the server
-npm start
-```
-
-### Development
-
-```bash
-# Run in development mode with hot reload
-npm run dev
-
-# Run type checking
-npm run typecheck
-
-# Run linting
-npm run lint
-
-# Run tests
-npm test
-```
-
-### Docker Deployment
-
-```bash
-# Build Docker image
-docker build -t ai-manus-unified .
-
-# Run container
-docker run -p 3000:3000 --env-file .env ai-manus-unified
-
-# Or use docker-compose for full stack
+# Start with Docker Compose
 docker-compose up -d
+
+# Or run manually:
+
+# Backend
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+
+# Frontend (in another terminal)
+cd frontend
+npm install
+npm run dev
 ```
 
-## 📡 API Endpoints
+---
 
-### Health & Status
-- `GET /` - Server info
-- `GET /health` - Health check
-- `GET /stats` - System statistics
+## 🏗️ Architecture
 
-### Providers
-- `GET /providers` - List all providers
-- `GET /providers/:name` - Get provider details
-- `GET /providers/:name/health` - Provider health check
+```
+ai-manus-unified/
+├── backend/
+│   ├── main.py                 # FastAPI application entry point
+│   ├── skills/
+│   │   ├── skill_registry.py   # Skill definitions and registry
+│   │   └── mcp_tools.py        # MCP tool integrations
+│   ├── workflow/
+│   │   ├── workflow_runner.py  # DAG execution engine
+│   │   └── n8n_parser.py       # n8n workflow converter
+│   └── api/
+│       └── workflow_routes.py  # REST API endpoints
+├── frontend/
+│   └── src/
+│       └── components/
+│           └── workflow/
+│               └── WorkflowBuilder.tsx  # React Flow canvas
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
+```
 
-### Models
-- `GET /models` - List all available models
-
-### Tools
-- `GET /tools` - List all tools
-- `GET /tools/:name` - Get tool details
-- `POST /tools/:name/execute` - Execute a tool
-
-### Chat
-- `POST /chat` - Generate completion
-- `POST /chat/stream` - Stream completion (SSE)
-
-### Agents
-- `POST /agents` - Create agent
-- `GET /agents` - List agents
-- `GET /agents/:id` - Get agent state
-- `POST /agents/:id/execute` - Execute agent task (SSE)
-- `DELETE /agents/:id` - Delete agent
+---
 
 ## 🔧 Configuration
 
@@ -166,114 +121,171 @@ docker-compose up -d
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `NODE_ENV` | Environment | `development` |
-| `PORT` | Server port | `3000` |
-| `HOST` | Server host | `0.0.0.0` |
 | `OPENAI_API_KEY` | OpenAI API key | - |
 | `ANTHROPIC_API_KEY` | Anthropic API key | - |
-| `GOOGLE_GENERATIVE_AI_API_KEY` | Google AI key | - |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | Google AI API key | - |
 | `DEEPSEEK_API_KEY` | DeepSeek API key | - |
-| `GROQ_API_KEY` | Groq API key | - |
-| `MISTRAL_API_KEY` | Mistral API key | - |
-| `OPEN_ROUTER_API_KEY` | OpenRouter API key | - |
-| `XAI_API_KEY` | xAI API key | - |
-| `COHERE_API_KEY` | Cohere API key | - |
-| `OLLAMA_API_BASE_URL` | Ollama base URL | `http://127.0.0.1:11434` |
-| `MONGODB_URI` | MongoDB connection | `mongodb://localhost:27017` |
-| `REDIS_HOST` | Redis host | `localhost` |
+| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017` |
+| `REDIS_URL` | Redis connection string | `redis://localhost:6379` |
+| `JWT_SECRET_KEY` | JWT signing secret | (required) |
 
-See `.env.example` for complete configuration options.
+See [.env.example](.env.example) for all configuration options.
 
-## 📋 Conflict Resolution Summary
+---
 
-### Repository Analysis
+## 📚 API Documentation
 
-| Aspect | ai-manus | syria-ai-manus |
-|--------|----------|----------------|
-| Language | Python (FastAPI) | TypeScript (Hono/Bun) |
-| Providers | OpenAI (via openai package) | 20+ providers (via AI SDK) |
-| Tools | Python-based tools | TypeScript-based tools |
-| Frontend | Vue.js | React Native/Expo |
-| Database | MongoDB, Redis | Supabase |
+### Workflow Endpoints
 
-### Merge Decisions
+```http
+GET    /api/workflows              # List all workflows
+POST   /api/workflows              # Create a workflow
+GET    /api/workflows/{id}         # Get workflow by ID
+PUT    /api/workflows/{id}         # Update workflow
+DELETE /api/workflows/{id}         # Delete workflow
+POST   /api/workflows/execute      # Execute a workflow
+POST   /api/workflows/execute/stream  # Execute with SSE streaming
+GET    /api/executions/{id}        # Get execution status
+```
 
-#### 1. Runtime Stack
-- **Decision**: TypeScript/Node.js with Hono framework
-- **Rationale**: Better AI SDK support, unified with syria-ai-manus approach, Bun compatibility
+### Skills Endpoints
 
-#### 2. Provider System
-- **Source**: syria-ai-manus (comprehensive provider list)
-- **Enhancement**: Added unified interface from ai-manus patterns
-- **Result**: 17+ providers with standardized interface
+```http
+GET    /api/workflows/skills       # List all available skills
+GET    /api/workflows/skills/{id}  # Get skill details
+GET    /api/workflows/skills/categories  # List skill categories
+```
 
-#### 3. Tool System
-- **Source**: ai-manus (Python tools)
-- **Action**: Ported to TypeScript with enhanced interface
-- **Tools Merged**: Shell, File, Browser, Search, Message, Plan
+### n8n Import
 
-#### 4. Agent Runtime
-- **Source**: ai-manus (agent domain service)
-- **Action**: Rewritten in TypeScript with same patterns
-- **Enhancement**: Added event-based streaming, tool registry integration
+```http
+POST   /api/workflows/import/n8n   # Import n8n workflow
+POST   /api/workflows/import/n8n/preview  # Preview import
+```
 
-#### 5. Orchestrator
-- **Source**: New implementation
-- **Features**: Combined best practices from both repos
-- **Capabilities**: Failover, health monitoring, cost-aware routing
+### Interactive Docs
 
-#### 6. Environment Variables
-- **Action**: Merged all env vars from both repos
-- **Normalization**: Standardized naming (e.g., `OPENAI_API_KEY`)
-- **Result**: Single `.env.example` with all options
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
 
-#### 7. Frontend
-- **Decision**: Not included in core platform
-- **Rationale**: API-first design allows any frontend
-- **Reference**: Both Vue.js and React Native frontends available in source repos
+---
 
-### Removed Duplicates
+## 🧩 Available Skills
 
-| Component | Source | Action |
-|-----------|--------|--------|
-| OpenAI client | Both repos | Unified to AI SDK |
-| Tool definitions | Both repos | Merged into registry |
-| Config loading | Both repos | Unified config manager |
-| Auth system | Both repos | Unified JWT-based auth |
+### Cognitive & AI Reasoning
+| Skill | Description |
+|-------|-------------|
+| `dynamic_planner` | AI-powered workflow path decision making |
+| `data_extractor` | Extract structured data from unstructured text |
+| `document_summarizer` | Summarize long documents |
 
-### Dependency Resolution
+### Web & Research
+| Skill | Description |
+|-------|-------------|
+| `browser_operator` | Navigate and interact with web pages |
+| `wide_researcher` | Multi-source web research |
+| `http_request` | Make HTTP requests to APIs |
 
-| Package | Version | Source |
-|---------|---------|--------|
-| `ai` | ^6.0.78 | syria-ai-manus |
-| `@ai-sdk/*` | Latest | syria-ai-manus |
-| `hono` | ^4.9.10 | syria-ai-manus |
-| `zod` | ^3.25.76 | syria-ai-manus |
-| `playwright` | ^1.42.0 | ai-manus |
-| `dockerode` | ^4.0.2 | ai-manus |
-| `mongoose` | ^8.9.0 | ai-manus |
-| `ioredis` | ^5.4.1 | ai-manus |
+### Execution & Development
+| Skill | Description |
+|-------|-------------|
+| `python_sandbox` | Execute Python code securely |
+| `bash_commander` | Run shell commands |
+| `file_manager` | File system operations |
 
-## 🧪 Validation Checklist
+### External Integrations (MCP)
+| Skill | Description |
+|-------|-------------|
+| `n8n_webhook` | Trigger n8n workflows |
+| `database_operator` | SQL database operations |
 
-- [x] TypeScript compiles without errors
-- [x] All providers implement interface
-- [x] All tools implement interface
-- [x] Server starts successfully
-- [x] Health endpoint responds
-- [x] Provider registration works
-- [x] Tool registration works
-- [x] Docker build succeeds
-- [x] Docker compose validates
-- [x] CI workflow configured
+---
+
+## 🔄 n8n Compatibility
+
+AI Manus Unified can import workflows from n8n:
+
+```python
+from workflow.n8n_parser import N8NParser
+
+parser = N8NParser()
+manus_workflow = parser.parse_file("n8n-export.json")
+```
+
+### Supported n8n Nodes
+
+| n8n Node | Manus Skill |
+|----------|-------------|
+| HTTP Request | `http_request` |
+| Code | `python_sandbox` |
+| Execute Command | `bash_commander` |
+| Read/Write File | `file_manager` |
+| PostgreSQL/MySQL/SQLite | `database_operator` |
+| Webhook | `trigger_webhook` |
+| IF/Switch | `dynamic_planner` |
+
+---
+
+## 🐳 Docker Deployment
+
+### Development
+
+```bash
+docker-compose up -d
+```
+
+### Production
+
+```bash
+docker-compose --profile production up -d
+```
+
+This enables the Nginx reverse proxy with SSL termination.
+
+---
+
+## 🧪 Testing
+
+```bash
+# Backend tests
+cd backend
+pytest
+
+# Frontend tests
+cd frontend
+npm test
+```
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
 
 ## 📄 License
 
-MIT License - See LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
 
 ## 🙏 Acknowledgments
 
-- [ai-manus](https://github.com/simpleyyt/ai-manus) - Original Python implementation
-- [syria-ai-manus](https://github.com/sadadonline17-oss/syria-ai-manus) - TypeScript implementation with extended providers
-- [Vercel AI SDK](https://sdk.vercel.ai) - Unified AI provider interface
-- [Hono](https://hono.dev) - Fast, lightweight web framework
+- [ai-manus](https://github.com/simpleyyt/ai-manus) - Original agent runtime and sandbox
+- [syria-ai-manus](https://github.com/sadadonline17-oss/syria-ai-manus) - Additional providers and integrations
+- [React Flow](https://reactflow.dev/) - Visual workflow canvas
+- [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
+- [Vercel AI SDK](https://sdk.vercel.ai/) - AI provider abstraction
+
+---
+
+<div align="center">
+
+**Built with ❤️ by the AI Manus Unified Team**
+
+</div>
