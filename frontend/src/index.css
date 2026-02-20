@@ -1,35 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Catppuccin Mocha Theme */
-  --rosewater: #f5e0dc;
-  --flamingo: #f2cdcd;
-  --pink: #f5c2e7;
-  --mauve: #cba6f7;
-  --red: #f38ba8;
-  --maroon: #eba0ac;
-  --peach: #fab387;
-  --yellow: #f9e2af;
-  --green: #a6e3a1;
-  --teal: #94e2d5;
-  --sky: #89dceb;
-  --sapphire: #74c7ec;
-  --blue: #89b4fa;
-  --lavender: #b4befe;
-  --text: #cdd6f4;
-  --subtext1: #bac2de;
-  --subtext0: #a6adc8;
-  --overlay2: #9399b2;
-  --overlay1: #7f849c;
-  --overlay0: #6c7086;
-  --surface2: #585b70;
-  --surface1: #45475a;
-  --surface0: #313244;
-  --base: #1e1e2e;
-  --mantle: #181825;
-  --crust: #11111b;
+  /* Syrian Arab Republic Theme */
+  --bg-primary: #002323;
+  --bg-secondary: #012b2b;
+  --bg-tertiary: #013333;
+  --bg-elevated: #0a3a3a;
+  
+  --brand-eagle: #d4b06a;
+  --brand-eagle-dark: #b9944d;
+  
+  --text-primary: #f5f2e9;
+  --text-secondary: #e1dac8;
+  --text-muted: #9b9380;
+  --text-accent: #d4b06a;
+  
+  --accent-primary: #d4b06a;
+  --accent-primary-hover: #e1c37e;
+  --accent-secondary: #7aa2f7;
+  --accent-success: #9ece6a;
+  --accent-warning: #e0af68;
+  --accent-error: #f7768e;
+  
+  --border-default: #124040;
+  --border-muted: #0c2b2b;
+  --border-focus: #d4b06a;
 }
 
 * {
@@ -38,11 +37,24 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background-color: var(--base);
-  color: var(--text);
+  font-family: 'Inter', 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   overflow: hidden;
+  direction: ltr;
+}
+
+/* Arabic text support */
+[lang="ar"], .arabic-text {
+  font-family: 'Cairo', 'Noto Sans Arabic', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  direction: rtl;
 }
 
 /* Scrollbar Styling */
@@ -52,16 +64,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--mantle);
+  background: var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--surface1);
+  background: var(--border-default);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--surface2);
+  background: var(--brand-eagle);
 }
 
 /* Animation */
@@ -74,11 +86,6 @@ body {
   }
 }
 
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Message animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -90,8 +97,36 @@ body {
   }
 }
 
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 .message-fade-in {
   animation: fadeIn 0.3s ease-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
 }
 
 /* Typing indicator */
@@ -114,4 +149,94 @@ body {
 
 .typing-dot:nth-child(3) {
   animation-delay: 0.4s;
+}
+
+/* Syrian Shell Layout */
+@layer components {
+  .syrian-shell {
+    @apply relative bg-bg-primary text-text-primary min-h-screen flex flex-col;
+  }
+
+  .syrian-shell::before,
+  .syrian-shell::after {
+    content: "";
+    @apply absolute left-0 right-0 h-1 pointer-events-none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--brand-eagle) 20%,
+      var(--brand-eagle) 80%,
+      transparent 100%
+    );
+    opacity: 0.3;
+  }
+
+  .syrian-shell::before {
+    @apply top-0;
+  }
+
+  .syrian-shell::after {
+    @apply bottom-0;
+  }
+
+  /* Card styles */
+  .syrian-card {
+    @apply bg-bg-elevated border border-border rounded-lg p-4;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
+  }
+
+  /* Button styles */
+  .syrian-btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+  }
+
+  .syrian-btn-primary {
+    @apply syrian-btn bg-accent-primary text-bg-primary hover:bg-accent-primaryHover;
+  }
+
+  .syrian-btn-secondary {
+    @apply syrian-btn bg-bg-elevated text-text-primary border border-border hover:border-brand-eagle;
+  }
+
+  /* Input styles */
+  .syrian-input {
+    @apply w-full bg-bg-secondary text-text-primary placeholder-text-muted px-4 py-3 rounded-lg border border-border focus:outline-none focus:border-border-focus transition-colors;
+  }
+
+  /* Header branding */
+  .syrian-header {
+    @apply flex items-center justify-center gap-4 py-6;
+  }
+
+  .syrian-logo {
+    @apply flex flex-col items-center gap-2;
+  }
+
+  .syrian-eagle {
+    @apply w-16 h-16 text-brand-eagle;
+  }
+
+  .syrian-title {
+    @apply text-center;
+  }
+
+  .syrian-title-ar {
+    @apply text-lg font-semibold text-text-primary font-arabic;
+  }
+
+  .syrian-title-en {
+    @apply text-sm text-text-muted uppercase tracking-wider;
+  }
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--brand-eagle);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--brand-eagle);
+  color: var(--bg-primary);
 }

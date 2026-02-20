@@ -70,7 +70,7 @@ export default function SettingsView() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <Loader2 size={32} className="animate-spin text-[#cba6f7]" />
+        <Loader2 size={32} className="animate-spin text-brand-eagle" />
       </div>
     )
   }
@@ -81,13 +81,13 @@ export default function SettingsView() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-[#cdd6f4]">Settings</h1>
-            <p className="text-[#a6adc8]">Configure your AI Manus platform</p>
+            <h1 className="text-2xl font-bold text-text-primary">Settings</h1>
+            <p className="text-text-muted font-arabic">الإعدادات</p>
           </div>
           <button
             onClick={saveSettings}
             disabled={saving}
-            className="flex items-center gap-2 px-4 py-2 bg-[#cba6f7] hover:bg-[#b4befe] disabled:bg-[#45475a] text-[#1e1e2e] rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-brand-eagle hover:bg-accent-primaryHover disabled:bg-bg-elevated text-bg-primary rounded-lg transition-colors disabled:border disabled:border-border"
           >
             {saving ? (
               <Loader2 size={18} className="animate-spin" />
@@ -103,41 +103,45 @@ export default function SettingsView() {
         {/* Stats */}
         {stats && (
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-[#181825] border border-[#313244] rounded-xl p-4">
-              <p className="text-sm text-[#a6adc8]">Providers</p>
-              <p className="text-2xl font-bold text-[#cba6f7]">
+            <div className="bg-bg-secondary border border-border rounded-xl p-4">
+              <p className="text-sm text-text-muted">Providers</p>
+              <p className="text-sm text-text-muted font-arabic">المزودين</p>
+              <p className="text-2xl font-bold text-brand-eagle">
                 {stats.providers.availableProviders}/{stats.providers.totalProviders}
               </p>
-              <p className="text-xs text-[#6c7086]">Available</p>
+              <p className="text-xs text-text-muted">Available</p>
             </div>
-            <div className="bg-[#181825] border border-[#313244] rounded-xl p-4">
-              <p className="text-sm text-[#a6adc8]">Tools</p>
-              <p className="text-2xl font-bold text-[#89b4fa]">{stats.tools.totalTools}</p>
-              <p className="text-xs text-[#6c7086]">Registered</p>
+            <div className="bg-bg-secondary border border-border rounded-xl p-4">
+              <p className="text-sm text-text-muted">Tools</p>
+              <p className="text-sm text-text-muted font-arabic">الأدوات</p>
+              <p className="text-2xl font-bold text-accent-secondary">{stats.tools.totalTools}</p>
+              <p className="text-xs text-text-muted">Registered</p>
             </div>
-            <div className="bg-[#181825] border border-[#313244] rounded-xl p-4">
-              <p className="text-sm text-[#a6adc8]">Health</p>
-              <p className="text-2xl font-bold text-[#a6e3a1]">{stats.orchestrator.healthyProviders}</p>
-              <p className="text-xs text-[#6c7086]">Healthy Providers</p>
+            <div className="bg-bg-secondary border border-border rounded-xl p-4">
+              <p className="text-sm text-text-muted">Health</p>
+              <p className="text-sm text-text-muted font-arabic">الصحة</p>
+              <p className="text-2xl font-bold text-accent-success">{stats.orchestrator.healthyProviders}</p>
+              <p className="text-xs text-text-muted">Healthy Providers</p>
             </div>
           </div>
         )}
 
         {/* Provider Status */}
-        <div className="bg-[#181825] border border-[#313244] rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-[#cdd6f4] mb-4">Provider Status</h2>
+        <div className="bg-bg-secondary border border-border rounded-xl p-6">
+          <h2 className="text-lg font-semibold text-text-primary mb-2">Provider Status</h2>
+          <p className="text-sm text-text-muted font-arabic mb-4">حالة المزودين</p>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {providers.map((provider) => (
               <div
                 key={provider.name}
-                className="flex items-center gap-2 px-3 py-2 bg-[#1e1e2e] rounded-lg"
+                className="flex items-center gap-2 px-3 py-2 bg-bg-elevated rounded-lg border border-border"
               >
-                <div className={`w-2 h-2 rounded-full ${provider.available ? 'bg-[#a6e3a1]' : 'bg-[#f38ba8]'}`} />
-                <span className="text-sm text-[#cdd6f4]">{provider.displayName}</span>
+                <div className={`w-2 h-2 rounded-full ${provider.available ? 'bg-accent-success' : 'bg-accent-error'}`} />
+                <span className="text-sm text-text-primary">{provider.displayName}</span>
                 {provider.available ? (
-                  <Check size={14} className="text-[#a6e3a1] ml-auto" />
+                  <Check size={14} className="text-accent-success ml-auto" />
                 ) : (
-                  <X size={14} className="text-[#f38ba8] ml-auto" />
+                  <X size={14} className="text-accent-error ml-auto" />
                 )}
               </div>
             ))}
@@ -145,17 +149,18 @@ export default function SettingsView() {
         </div>
 
         {/* AI Settings */}
-        <div className="bg-[#181825] border border-[#313244] rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-[#cdd6f4] mb-4">AI Settings</h2>
+        <div className="bg-bg-secondary border border-border rounded-xl p-6">
+          <h2 className="text-lg font-semibold text-text-primary mb-2">AI Settings</h2>
+          <p className="text-sm text-text-muted font-arabic mb-4">إعدادات الذكاء الاصطناعي</p>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#a6adc8] mb-2">
+              <label className="block text-sm font-medium text-text-muted mb-2">
                 Default Provider
               </label>
               <select
                 value={settings.defaultProvider}
                 onChange={(e) => setSettings({ ...settings, defaultProvider: e.target.value })}
-                className="w-full bg-[#1e1e2e] text-[#cdd6f4] px-4 py-2 rounded-lg border border-[#313244] focus:outline-none focus:ring-2 focus:ring-[#cba6f7]"
+                className="w-full bg-bg-elevated text-text-primary px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-brand-eagle"
               >
                 {providers.map((provider) => (
                   <option key={provider.name} value={provider.name}>
@@ -166,7 +171,7 @@ export default function SettingsView() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#a6adc8] mb-2">
+              <label className="block text-sm font-medium text-text-muted mb-2">
                 Temperature: {settings.temperature}
               </label>
               <input
@@ -176,60 +181,59 @@ export default function SettingsView() {
                 step="0.1"
                 value={settings.temperature}
                 onChange={(e) => setSettings({ ...settings, temperature: parseFloat(e.target.value) })}
-                className="w-full accent-[#cba6f7]"
+                className="w-full accent-brand-eagle"
               />
-              <div className="flex justify-between text-xs text-[#6c7086]">
+              <div className="flex justify-between text-xs text-text-muted">
                 <span>Precise</span>
                 <span>Creative</span>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#a6adc8] mb-2">
+              <label className="block text-sm font-medium text-text-muted mb-2">
                 Max Tokens
               </label>
               <input
                 type="number"
                 value={settings.maxTokens}
                 onChange={(e) => setSettings({ ...settings, maxTokens: parseInt(e.target.value) })}
-                className="w-full bg-[#1e1e2e] text-[#cdd6f4] px-4 py-2 rounded-lg border border-[#313244] focus:outline-none focus:ring-2 focus:ring-[#cba6f7]"
+                className="w-full bg-bg-elevated text-text-primary px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-brand-eagle"
               />
             </div>
           </div>
         </div>
 
         {/* Appearance */}
-        <div className="bg-[#181825] border border-[#313244] rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-[#cdd6f4] mb-4">Appearance</h2>
+        <div className="bg-bg-secondary border border-border rounded-xl p-6">
+          <h2 className="text-lg font-semibold text-text-primary mb-2">Appearance</h2>
+          <p className="text-sm text-text-muted font-arabic mb-4">المظهر</p>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#a6adc8] mb-2">
+              <label className="block text-sm font-medium text-text-muted mb-2">
                 Theme
               </label>
               <select
                 value={settings.theme}
                 onChange={(e) => setSettings({ ...settings, theme: e.target.value })}
-                className="w-full bg-[#1e1e2e] text-[#cdd6f4] px-4 py-2 rounded-lg border border-[#313244] focus:outline-none focus:ring-2 focus:ring-[#cba6f7]"
+                className="w-full bg-bg-elevated text-text-primary px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-brand-eagle"
               >
-                <option value="dark">Dark (Catppuccin Mocha)</option>
+                <option value="dark">Dark (Syrian Theme)</option>
                 <option value="light">Light</option>
                 <option value="system">System</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#a6adc8] mb-2">
-                Language
+              <label className="block text-sm font-medium text-text-muted mb-2">
+                Language / اللغة
               </label>
               <select
                 value={settings.language}
                 onChange={(e) => setSettings({ ...settings, language: e.target.value })}
-                className="w-full bg-[#1e1e2e] text-[#cdd6f4] px-4 py-2 rounded-lg border border-[#313244] focus:outline-none focus:ring-2 focus:ring-[#cba6f7]"
+                className="w-full bg-bg-elevated text-text-primary px-4 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-brand-eagle"
               >
                 <option value="en">English</option>
-                <option value="ar">Arabic</option>
-                <option value="es">Spanish</option>
-                <option value="fr">French</option>
+                <option value="ar">العربية</option>
               </select>
             </div>
           </div>
@@ -239,7 +243,7 @@ export default function SettingsView() {
         <div className="flex gap-3">
           <button
             onClick={fetchData}
-            className="flex items-center gap-2 px-4 py-2 bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] rounded-lg transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-bg-elevated hover:bg-bg-tertiary text-text-primary rounded-lg transition-colors border border-border"
           >
             <RefreshCw size={18} />
             <span>Refresh</span>

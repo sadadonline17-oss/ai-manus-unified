@@ -105,12 +105,12 @@ const SkillNode: React.FC<{ data: WorkflowNodeData; selected?: boolean }> = ({
       style={{
         padding: '12px 16px',
         borderRadius: '8px',
-        background: data.skill?.color || '#6366f1',
-        color: 'white',
+        background: data.skill?.color || '#d4b06a',
+        color: '#002323',
         minWidth: '180px',
-        boxShadow: selected 
-          ? '0 0 0 2px #fff, 0 0 0 4px #3b82f6' 
-          : '0 2px 8px rgba(0,0,0,0.15)',
+        boxShadow: selected
+          ? '0 0 0 2px #d4b06a, 0 0 0 4px #b9944d'
+          : '0 2px 8px rgba(0,0,0,0.65)',
         border: `2px solid ${statusColors[data.status || 'pending']}`,
         transition: 'all 0.2s ease',
       }}
@@ -178,8 +178,8 @@ const SkillNode: React.FC<{ data: WorkflowNodeData; selected?: boolean }> = ({
           width: 12,
           height: 12,
           borderRadius: '50%',
-          background: '#fff',
-          border: '2px solid #6366f1',
+          background: '#f5f2e9',
+          border: '2px solid #d4b06a',
         }}
         className="react-flow__handle react-flow__handle-left"
       />
@@ -192,8 +192,8 @@ const SkillNode: React.FC<{ data: WorkflowNodeData; selected?: boolean }> = ({
           width: 12,
           height: 12,
           borderRadius: '50%',
-          background: '#fff',
-          border: '2px solid #6366f1',
+          background: '#f5f2e9',
+          border: '2px solid #d4b06a',
         }}
         className="react-flow__handle react-flow__handle-right"
       />
@@ -224,8 +224,8 @@ const SkillPanel: React.FC<{
   return (
     <div style={{
       width: '280px',
-      background: '#1e1e2e',
-      borderRight: '1px solid #313244',
+      background: '#012b2b',
+      borderRight: '1px solid #124040',
       display: 'flex',
       flexDirection: 'column',
       height: '100%',
@@ -233,18 +233,21 @@ const SkillPanel: React.FC<{
       {/* Header */}
       <div style={{
         padding: '16px',
-        borderBottom: '1px solid #313244',
+        borderBottom: '1px solid #124040',
       }}>
-        <h2 style={{ 
-          margin: 0, 
-          fontSize: '16px', 
-          color: '#cdd6f4',
+        <h2 style={{
+          margin: 0,
+          fontSize: '16px',
+          color: '#f5f2e9',
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
         }}>
           🧩 Skills Library
         </h2>
+        <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#9b9380', fontFamily: 'Cairo, sans-serif' }}>
+          مكتبة المهارات
+        </p>
       </div>
 
       {/* Category Filter */}
@@ -253,7 +256,7 @@ const SkillPanel: React.FC<{
         display: 'flex',
         flexWrap: 'wrap',
         gap: '4px',
-        borderBottom: '1px solid #313244',
+        borderBottom: '1px solid #124040',
       }}>
         <button
           onClick={() => onCategoryChange(null)}
@@ -261,8 +264,8 @@ const SkillPanel: React.FC<{
             padding: '4px 8px',
             borderRadius: '4px',
             border: 'none',
-            background: !selectedCategory ? '#89b4fa' : '#313244',
-            color: !selectedCategory ? '#1e1e2e' : '#cdd6f4',
+            background: !selectedCategory ? '#d4b06a' : '#0a3a3a',
+            color: !selectedCategory ? '#002323' : '#f5f2e9',
             cursor: 'pointer',
             fontSize: '11px',
           }}
@@ -277,8 +280,8 @@ const SkillPanel: React.FC<{
               padding: '4px 8px',
               borderRadius: '4px',
               border: 'none',
-              background: selectedCategory === cat ? '#89b4fa' : '#313244',
-              color: selectedCategory === cat ? '#1e1e2e' : '#cdd6f4',
+              background: selectedCategory === cat ? '#d4b06a' : '#0a3a3a',
+              color: selectedCategory === cat ? '#002323' : '#f5f2e9',
               cursor: 'pointer',
               fontSize: '11px',
             }}
@@ -308,18 +311,18 @@ const SkillPanel: React.FC<{
               padding: '12px',
               marginBottom: '8px',
               borderRadius: '8px',
-              background: '#313244',
+              background: '#0a3a3a',
               cursor: 'grab',
-              border: '1px solid #45475a',
+              border: '1px solid #124040',
               transition: 'all 0.2s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#45475a';
+              e.currentTarget.style.background = '#013333';
               e.currentTarget.style.borderColor = skill.color;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#313244';
-              e.currentTarget.style.borderColor = '#45475a';
+              e.currentTarget.style.background = '#0a3a3a';
+              e.currentTarget.style.borderColor = '#124040';
             }}
           >
             <div style={{
@@ -329,9 +332,9 @@ const SkillPanel: React.FC<{
               marginBottom: '4px',
             }}>
               <span style={{ fontSize: '18px' }}>{skill.icon}</span>
-              <span style={{ 
-                fontWeight: 600, 
-                color: '#cdd6f4',
+              <span style={{
+                fontWeight: 600,
+                color: '#f5f2e9',
                 fontSize: '13px',
               }}>
                 {skill.name}
@@ -339,7 +342,7 @@ const SkillPanel: React.FC<{
             </div>
             <div style={{
               fontSize: '11px',
-              color: '#a6adc8',
+              color: '#9b9380',
               lineHeight: '1.4',
             }}>
               {skill.description.slice(0, 60)}...
@@ -356,8 +359,8 @@ const SkillPanel: React.FC<{
                     fontSize: '9px',
                     padding: '2px 6px',
                     borderRadius: '4px',
-                    background: p.required ? '#f38ba8' : '#45475a',
-                    color: p.required ? '#1e1e2e' : '#cdd6f4',
+                    background: p.required ? '#f7768e' : '#124040',
+                    color: p.required ? '#002323' : '#f5f2e9',
                   }}
                 >
                   {p.name}
@@ -407,8 +410,8 @@ const NodeConfigPanel: React.FC<{
       top: 0,
       width: '320px',
       height: '100%',
-      background: '#1e1e2e',
-      borderLeft: '1px solid #313244',
+      background: '#012b2b',
+      borderLeft: '1px solid #124040',
       zIndex: 10,
       display: 'flex',
       flexDirection: 'column',
@@ -416,12 +419,12 @@ const NodeConfigPanel: React.FC<{
       {/* Header */}
       <div style={{
         padding: '16px',
-        borderBottom: '1px solid #313244',
+        borderBottom: '1px solid #124040',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
       }}>
-        <h3 style={{ margin: 0, color: '#cdd6f4', fontSize: '14px' }}>
+        <h3 style={{ margin: 0, color: '#f5f2e9', fontSize: '14px' }}>
           {skill.icon} {skill.name}
         </h3>
         <button
@@ -429,7 +432,7 @@ const NodeConfigPanel: React.FC<{
           style={{
             background: 'none',
             border: 'none',
-            color: '#cdd6f4',
+            color: '#f5f2e9',
             cursor: 'pointer',
             fontSize: '18px',
           }}
@@ -444,9 +447,9 @@ const NodeConfigPanel: React.FC<{
         overflow: 'auto',
         padding: '16px',
       }}>
-        <div style={{ 
-          fontSize: '12px', 
-          color: '#a6adc8',
+        <div style={{
+          fontSize: '12px',
+          color: '#9b9380',
           marginBottom: '16px',
         }}>
           {skill.description}
@@ -457,11 +460,11 @@ const NodeConfigPanel: React.FC<{
             <label style={{
               display: 'block',
               fontSize: '12px',
-              color: '#cdd6f4',
+              color: '#f5f2e9',
               marginBottom: '4px',
             }}>
               {param.name}
-              {param.required && <span style={{ color: '#f38ba8' }}> *</span>}
+              {param.required && <span style={{ color: '#f7768e' }}> *</span>}
             </label>
             
             {param.type === 'string' && !param.options && (
@@ -474,9 +477,9 @@ const NodeConfigPanel: React.FC<{
                   width: '100%',
                   padding: '8px',
                   borderRadius: '4px',
-                  border: '1px solid #45475a',
-                  background: '#313244',
-                  color: '#cdd6f4',
+                  border: '1px solid #124040',
+                  background: '#0a3a3a',
+                  color: '#f5f2e9',
                   fontSize: '12px',
                 }}
               />
@@ -490,9 +493,9 @@ const NodeConfigPanel: React.FC<{
                   width: '100%',
                   padding: '8px',
                   borderRadius: '4px',
-                  border: '1px solid #45475a',
-                  background: '#313244',
-                  color: '#cdd6f4',
+                  border: '1px solid #124040',
+                  background: '#0a3a3a',
+                  color: '#f5f2e9',
                   fontSize: '12px',
                 }}
               >
@@ -511,9 +514,9 @@ const NodeConfigPanel: React.FC<{
                   width: '100%',
                   padding: '8px',
                   borderRadius: '4px',
-                  border: '1px solid #45475a',
-                  background: '#313244',
-                  color: '#cdd6f4',
+                  border: '1px solid #124040',
+                  background: '#0a3a3a',
+                  color: '#f5f2e9',
                   fontSize: '12px',
                 }}
               />
@@ -526,7 +529,7 @@ const NodeConfigPanel: React.FC<{
                   checked={params[param.name] ?? param.default ?? false}
                   onChange={(e) => handleParamChange(param.name, e.target.checked)}
                 />
-                <span style={{ fontSize: '12px', color: '#a6adc8' }}>
+                <span style={{ fontSize: '12px', color: '#9b9380' }}>
                   {param.description}
                 </span>
               </label>
@@ -546,16 +549,16 @@ const NodeConfigPanel: React.FC<{
                   width: '100%',
                   padding: '8px',
                   borderRadius: '4px',
-                  border: '1px solid #45475a',
-                  background: '#313244',
-                  color: '#cdd6f4',
+                  border: '1px solid #124040',
+                  background: '#0a3a3a',
+                  color: '#f5f2e9',
                   fontSize: '11px',
                   fontFamily: 'monospace',
                 }}
               />
             )}
 
-            <div style={{ fontSize: '10px', color: '#6c7086', marginTop: '4px' }}>
+            <div style={{ fontSize: '10px', color: '#9b9380', marginTop: '4px' }}>
               {param.description}
             </div>
           </div>
@@ -565,7 +568,7 @@ const NodeConfigPanel: React.FC<{
       {/* Footer */}
       <div style={{
         padding: '16px',
-        borderTop: '1px solid #313244',
+        borderTop: '1px solid #124040',
       }}>
         <button
           onClick={handleSave}
@@ -574,8 +577,8 @@ const NodeConfigPanel: React.FC<{
             padding: '10px',
             borderRadius: '6px',
             border: 'none',
-            background: '#89b4fa',
-            color: '#1e1e2e',
+            background: '#d4b06a',
+            color: '#002323',
             fontWeight: 600,
             cursor: 'pointer',
           }}
@@ -700,7 +703,7 @@ const WorkflowBuilderInner: React.FC<WorkflowBuilderProps> = ({
   }, [edges, onEdgesChange]);
 
   return (
-    <div style={{ display: 'flex', height: '100%', background: '#11111b' }}>
+    <div style={{ display: 'flex', height: '100%', background: '#002323' }}>
       {/* Skill Panel */}
       <SkillPanel
         skills={skills}
@@ -731,11 +734,11 @@ const WorkflowBuilderInner: React.FC<WorkflowBuilderProps> = ({
             markerEnd: { type: MarkerType.ArrowClosed },
           }}
         >
-          <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="#313244" />
-          <Controls style={{ background: '#1e1e2e', borderRadius: '8px' }} />
+          <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="#124040" />
+          <Controls style={{ background: '#012b2b', borderRadius: '8px' }} />
           <MiniMap
-            style={{ background: '#1e1e2e' }}
-            nodeColor={(node) => node.data?.skill?.color || '#6366f1'}
+            style={{ background: '#012b2b' }}
+            nodeColor={(node) => node.data?.skill?.color || '#d4b06a'}
           />
 
           {/* Toolbar */}
@@ -743,10 +746,11 @@ const WorkflowBuilderInner: React.FC<WorkflowBuilderProps> = ({
             <div style={{
               display: 'flex',
               gap: '8px',
-              background: '#1e1e2e',
+              background: '#012b2b',
               padding: '8px 16px',
               borderRadius: '8px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.65)',
+              border: '1px solid #124040',
             }}>
               <input
                 type="text"
@@ -755,7 +759,7 @@ const WorkflowBuilderInner: React.FC<WorkflowBuilderProps> = ({
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#cdd6f4',
+                  color: '#f5f2e9',
                   fontSize: '14px',
                   fontWeight: 600,
                   width: '200px',
@@ -767,8 +771,8 @@ const WorkflowBuilderInner: React.FC<WorkflowBuilderProps> = ({
                   padding: '6px 16px',
                   borderRadius: '6px',
                   border: 'none',
-                  background: '#a6e3a1',
-                  color: '#1e1e2e',
+                  background: '#9ece6a',
+                  color: '#002323',
                   fontWeight: 600,
                   cursor: 'pointer',
                   display: 'flex',
@@ -782,9 +786,9 @@ const WorkflowBuilderInner: React.FC<WorkflowBuilderProps> = ({
                 style={{
                   padding: '6px 12px',
                   borderRadius: '6px',
-                  border: '1px solid #45475a',
+                  border: '1px solid #124040',
                   background: 'transparent',
-                  color: '#cdd6f4',
+                  color: '#f5f2e9',
                   cursor: 'pointer',
                 }}
               >
@@ -794,9 +798,9 @@ const WorkflowBuilderInner: React.FC<WorkflowBuilderProps> = ({
                 style={{
                   padding: '6px 12px',
                   borderRadius: '6px',
-                  border: '1px solid #45475a',
+                  border: '1px solid #124040',
                   background: 'transparent',
-                  color: '#cdd6f4',
+                  color: '#f5f2e9',
                   cursor: 'pointer',
                 }}
               >

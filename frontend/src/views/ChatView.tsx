@@ -104,26 +104,26 @@ export default function ChatView() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <header className="px-6 py-4 border-b border-[#313244] bg-[#181825]">
+      <header className="px-6 py-4 border-b border-border bg-bg-secondary">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-[#cdd6f4]">AI Chat</h1>
-            <p className="text-sm text-[#a6adc8]">Chat with AI providers</p>
+            <h1 className="text-xl font-semibold text-text-primary">AI Chat</h1>
+            <p className="text-sm text-text-muted font-arabic">المحادثة الذكية</p>
           </div>
           
           {/* Provider Selector */}
           <div className="relative">
             <button
               onClick={() => setShowProviderDropdown(!showProviderDropdown)}
-              className="flex items-center gap-2 px-4 py-2 bg-[#313244] hover:bg-[#45475a] rounded-lg transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-bg-elevated hover:bg-bg-tertiary border border-border rounded-lg transition-colors"
             >
-              <div className={`w-2 h-2 rounded-full ${selectedProviderData?.available ? 'bg-[#a6e3a1]' : 'bg-[#f38ba8]'}`}></div>
-              <span className="text-[#cdd6f4]">{selectedProviderData?.displayName || selectedProvider}</span>
-              <ChevronDown size={16} className="text-[#a6adc8]" />
+              <div className={`w-2 h-2 rounded-full ${selectedProviderData?.available ? 'bg-accent-success' : 'bg-accent-error'}`}></div>
+              <span className="text-text-primary">{selectedProviderData?.displayName || selectedProvider}</span>
+              <ChevronDown size={16} className="text-text-muted" />
             </button>
             
             {showProviderDropdown && (
-              <div className="absolute right-0 mt-2 w-56 bg-[#181825] border border-[#313244] rounded-lg shadow-xl z-50">
+              <div className="absolute right-0 mt-2 w-56 bg-bg-secondary border border-border rounded-lg shadow-xl z-50">
                 {providers.map((provider) => (
                   <button
                     key={provider.name}
@@ -131,11 +131,11 @@ export default function ChatView() {
                       setSelectedProvider(provider.name)
                       setShowProviderDropdown(false)
                     }}
-                    className={`w-full flex items-center gap-2 px-4 py-2 hover:bg-[#313244] transition-colors first:rounded-t-lg last:rounded-b-lg ${
-                      selectedProvider === provider.name ? 'bg-[#313244] text-[#cba6f7]' : 'text-[#cdd6f4]'
+                    className={`w-full flex items-center gap-2 px-4 py-2 hover:bg-bg-elevated transition-colors first:rounded-t-lg last:rounded-b-lg ${
+                      selectedProvider === provider.name ? 'bg-bg-elevated text-brand-eagle' : 'text-text-primary'
                     }`}
                   >
-                    <div className={`w-2 h-2 rounded-full ${provider.available ? 'bg-[#a6e3a1]' : 'bg-[#f38ba8]'}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${provider.available ? 'bg-accent-success' : 'bg-accent-error'}`}></div>
                     <span>{provider.displayName}</span>
                   </button>
                 ))}
@@ -148,10 +148,10 @@ export default function ChatView() {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-[#a6adc8]">
-            <Bot size={48} className="mb-4 text-[#cba6f7]" />
+          <div className="flex flex-col items-center justify-center h-full text-text-muted">
+            <Bot size={48} className="mb-4 text-brand-eagle" />
             <p className="text-lg">Start a conversation</p>
-            <p className="text-sm">Send a message to begin chatting with AI</p>
+            <p className="text-sm font-arabic">ابدأ المحادثة</p>
           </div>
         )}
 
@@ -163,27 +163,27 @@ export default function ChatView() {
             }`}
           >
             {message.role === 'assistant' && (
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#cba6f7] to-[#89b4fa] flex items-center justify-center flex-shrink-0">
-                <Bot size={18} className="text-white" />
+              <div className="w-8 h-8 rounded-lg bg-brand-eagle flex items-center justify-center flex-shrink-0">
+                <Bot size={18} className="text-bg-primary" />
               </div>
             )}
             
             <div
               className={`max-w-[70%] px-4 py-3 rounded-xl ${
                 message.role === 'user'
-                  ? 'bg-[#cba6f7] text-[#1e1e2e]'
-                  : 'bg-[#313244] text-[#cdd6f4]'
+                  ? 'bg-brand-eagle text-bg-primary'
+                  : 'bg-bg-elevated text-text-primary border border-border'
               }`}
             >
               <p className="whitespace-pre-wrap">{message.content}</p>
-              <p className={`text-xs mt-1 ${message.role === 'user' ? 'text-[#45475a]' : 'text-[#6c7086]'}`}>
+              <p className={`text-xs mt-1 ${message.role === 'user' ? 'text-bg-secondary' : 'text-text-muted'}`}>
                 {message.timestamp.toLocaleTimeString()}
               </p>
             </div>
 
             {message.role === 'user' && (
-              <div className="w-8 h-8 rounded-lg bg-[#45475a] flex items-center justify-center flex-shrink-0">
-                <User size={18} className="text-[#cdd6f4]" />
+              <div className="w-8 h-8 rounded-lg bg-bg-elevated flex items-center justify-center flex-shrink-0 border border-border">
+                <User size={18} className="text-brand-eagle" />
               </div>
             )}
           </div>
@@ -191,13 +191,14 @@ export default function ChatView() {
 
         {loading && (
           <div className="flex gap-3 message-fade-in">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#cba6f7] to-[#89b4fa] flex items-center justify-center flex-shrink-0">
-              <Bot size={18} className="text-white" />
+            <div className="w-8 h-8 rounded-lg bg-brand-eagle flex items-center justify-center flex-shrink-0">
+              <Bot size={18} className="text-bg-primary" />
             </div>
-            <div className="bg-[#313244] px-4 py-3 rounded-xl">
-              <div className="flex items-center gap-2 text-[#a6adc8]">
+            <div className="bg-bg-elevated px-4 py-3 rounded-xl border border-border">
+              <div className="flex items-center gap-2 text-text-muted">
                 <Loader2 size={16} className="animate-spin" />
                 <span>Thinking...</span>
+                <span className="font-arabic text-sm">جاري التفكير...</span>
               </div>
             </div>
           </div>
@@ -207,22 +208,22 @@ export default function ChatView() {
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-[#313244] bg-[#181825]">
+      <div className="p-4 border-t border-border bg-bg-secondary">
         <div className="flex gap-3">
           <textarea
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Type your message..."
+            placeholder="Type your message... / اكتب رسالتك..."
             rows={1}
-            className="flex-1 bg-[#313244] text-[#cdd6f4] placeholder-[#6c7086] px-4 py-3 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-[#cba6f7] transition-all"
+            className="flex-1 bg-bg-elevated text-text-primary placeholder-text-muted px-4 py-3 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-brand-eagle border border-border transition-all"
             style={{ minHeight: '48px', maxHeight: '120px' }}
           />
           <button
             onClick={sendMessage}
             disabled={!input.trim() || loading}
-            className="px-4 py-3 bg-[#cba6f7] hover:bg-[#b4befe] disabled:bg-[#45475a] disabled:cursor-not-allowed text-[#1e1e2e] rounded-xl transition-colors flex items-center gap-2"
+            className="px-4 py-3 bg-brand-eagle hover:bg-accent-primaryHover disabled:bg-bg-elevated disabled:cursor-not-allowed text-bg-primary rounded-xl transition-colors flex items-center gap-2 disabled:border disabled:border-border"
           >
             <Send size={18} />
           </button>
