@@ -51,7 +51,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     logger.info(f"Loaded {len(skill_registry.list_all())} skills")
     
     # Initialize workflow manager
-    from workflow.workflow_runner import workflow_manager as _
+    from workflow.workflow_runner import workflow_manager
     logger.info("Workflow manager initialized")
     
     logger.info("=" * 60)
@@ -178,31 +178,115 @@ logger.info("Workflow routes registered at /api/workflows")
 # Additional API Routes
 # =============================================================================
 
+# In-memory storage for API keys (simulated)
+api_keys_storage = {}
+
 @app.get("/api/providers")
 async def list_providers():
     """List all available AI providers."""
-    # In a real app, these would be checked against env vars or health checks
     return {
         "providers": [
-            {"id": "openai", "name": "openai", "displayName": "OpenAI", "available": True, "models": ["gpt-4o", "gpt-4-turbo", "o1", "o3-mini"]},
-            {"id": "anthropic", "name": "anthropic", "displayName": "Anthropic", "available": True, "models": ["claude-sonnet-4", "claude-3.5-sonnet", "claude-3.5-haiku"]},
-            {"id": "google", "name": "google", "displayName": "Google AI", "available": True, "models": ["gemini-2.0-flash", "gemini-1.5-pro"]},
-            {"id": "deepseek", "name": "deepseek", "displayName": "DeepSeek", "available": True, "models": ["deepseek-chat", "deepseek-reasoner"]},
-            {"id": "groq", "name": "groq", "displayName": "Groq", "available": True, "models": ["llama-3.3-70b-versatile", "mixtral-8x7b"]},
-            {"id": "mistral", "name": "mistral", "displayName": "Mistral AI", "available": True, "models": ["mistral-large-latest", "codestral-latest"]},
-            {"id": "xai", "name": "xai", "displayName": "xAI", "available": True, "models": ["grok-beta"]},
-            {"id": "cohere", "name": "cohere", "displayName": "Cohere", "available": True, "models": ["command-r-plus", "command-r"]},
-            {"id": "openrouter", "name": "openrouter", "displayName": "OpenRouter", "available": True, "models": ["openai/gpt-4o", "anthropic/claude-3.5-sonnet"]},
-            {"id": "ollama", "name": "ollama", "displayName": "Ollama (Local)", "available": False, "models": ["llama3.2", "codellama", "mistral"]},
-            {"id": "lmstudio", "name": "lmstudio", "displayName": "LMStudio (Local)", "available": False, "models": ["local-model"]},
-            {"id": "together", "name": "together", "displayName": "Together AI", "available": True, "models": ["meta-llama/Llama-3-70b-chat-hf"]},
-            {"id": "perplexity", "name": "perplexity", "displayName": "Perplexity", "available": True, "models": ["llama-3.1-sonar-large-128k-online"]},
-            {"id": "huggingface", "name": "huggingface", "displayName": "HuggingFace", "available": True, "models": ["meta-llama/Llama-2-70b-chat-hf"]},
-            {"id": "moonshot", "name": "moonshot", "displayName": "Moonshot (Kimi)", "available": True, "models": ["moonshot-v1-8k", "moonshot-v1-32k"]},
-            {"id": "hyperbolic", "name": "hyperbolic", "displayName": "Hyperbolic", "available": True, "models": ["meta-llama/Llama-3-70b"]},
-            {"id": "github", "name": "github", "displayName": "GitHub Models", "available": True, "models": ["gpt-4o", "Phi-3-medium-128k-instruct"]},
+            {
+                "id": "openai",
+                "name": "openai",
+                "displayName": "OpenAI",
+                "available": True,
+                "type": "cloud",
+                "models": ["gpt-4o", "gpt-4-turbo", "o1", "o3-mini"],
+                "description": "Industry leader with powerful general-purpose models."
+            },
+            {
+                "id": "anthropic",
+                "name": "anthropic",
+                "displayName": "Anthropic",
+                "available": True,
+                "type": "cloud",
+                "models": ["claude-3-5-sonnet-latest", "claude-3-5-haiku-latest", "claude-3-opus-latest"],
+                "description": "Focused on safety and nuanced reasoning."
+            },
+            {
+                "id": "google",
+                "name": "google",
+                "displayName": "Google AI",
+                "available": True,
+                "type": "cloud",
+                "models": ["gemini-2.0-flash", "gemini-1.5-pro", "gemini-1.5-flash"],
+                "description": "Excellent multimodal capabilities and large context windows."
+            },
+            {
+                "id": "deepseek",
+                "name": "deepseek",
+                "displayName": "DeepSeek",
+                "available": True,
+                "type": "cloud",
+                "models": ["deepseek-chat", "deepseek-reasoner"],
+                "description": "High-performance models with competitive pricing."
+            },
+            {
+                "id": "groq",
+                "name": "groq",
+                "displayName": "Groq",
+                "available": True,
+                "type": "cloud",
+                "models": ["llama-3.3-70b-versatile", "mixtral-8x7b-32768", "gemma2-9b-it"],
+                "description": "Ultra-fast inference speed."
+            },
+            {
+                "id": "mistral",
+                "name": "mistral",
+                "displayName": "Mistral AI",
+                "available": True,
+                "type": "cloud",
+                "models": ["mistral-large-latest", "pixtral-large-latest", "codestral-latest"],
+                "description": "Efficient open-weights models from Europe."
+            },
+            {
+                "id": "ollama",
+                "name": "ollama",
+                "displayName": "Ollama",
+                "available": True,
+                "type": "local",
+                "models": ["llama3.2", "mistral", "phi3", "codellama"],
+                "description": "Run powerful models locally on your machine."
+            },
+            {
+                "id": "lmstudio",
+                "name": "lmstudio",
+                "displayName": "LMStudio",
+                "available": True,
+                "type": "local",
+                "models": ["local-model"],
+                "description": "GUI for running local LLMs with ease."
+            },
+            {
+                "id": "openrouter",
+                "name": "openrouter",
+                "displayName": "OpenRouter",
+                "available": True,
+                "type": "cloud",
+                "models": ["openai/gpt-4o", "anthropic/claude-3.5-sonnet", "deepseek/deepseek-chat"],
+                "description": "Unified API for access to hundreds of AI models."
+            },
         ]
     }
+
+
+@app.get("/api/keys")
+async def get_api_keys():
+    """Get stored API keys (names only for security)."""
+    return {"keys": list(api_keys_storage.keys())}
+
+
+@app.post("/api/keys")
+async def save_api_key(request: Request):
+    """Save an API key for a provider."""
+    data = await request.json()
+    provider = data.get("provider")
+    key = data.get("key")
+    if provider and key:
+        api_keys_storage[provider] = key
+        return {"status": "success", "message": f"Key for {provider} saved"}
+    return JSONResponse(status_code=400, content={"error": "Missing provider or key"})
 
 
 @app.get("/api/tools")
@@ -215,7 +299,7 @@ async def list_tools():
             {
                 "name": skill.id,
                 "description": skill.description,
-                "category": skill.category.value.split('_')[0],  # Simplified category
+                "category": skill.category.value.split('_')[0],
             }
             for skill in skills
         ]
@@ -227,11 +311,12 @@ async def chat(request: Request):
     """Handle chat requests."""
     data = await request.json()
     provider = data.get("provider", "openai")
+    model = data.get("model", "unknown")
     messages = data.get("messages", [])
 
-    # Mock response
+    # Simple response for demonstration
     return {
-        "data": f"This is a simulated response from {provider} for your message: '{messages[-1]['content']}'"
+        "data": f"Response from {provider} using model {model} for: '{messages[-1]['content']}'"
     }
 
 
@@ -264,11 +349,6 @@ async def get_config():
             "streaming": True,
             "sandbox": True,
             "mcp_tools": True,
-        },
-        "limits": {
-            "max_workflow_nodes": 100,
-            "max_parallel_executions": 5,
-            "default_timeout": 300,
         }
     }
 

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, Bot, User, Loader2, ChevronDown } from 'lucide-react'
+import { Send, Bot, User, Loader2, ChevronDown, Key, Settings, Globe, Cpu } from 'lucide-react'
 import axios from 'axios'
 
 const API_URL = '/api'
@@ -12,9 +12,12 @@ interface Message {
 }
 
 interface Provider {
+  id: string
   name: string
   displayName: string
   available: boolean
+  models: string[]
+  type: 'cloud' | 'local'
 }
 
 export default function ChatView() {
@@ -23,25 +26,52 @@ export default function ChatView() {
   const [loading, setLoading] = useState(false)
   const [providers, setProviders] = useState<Provider[]>([])
   const [selectedProvider, setSelectedProvider] = useState<string>('openai')
+  const [selectedModel, setSelectedModel] = useState<string>('')
   const [showProviderDropdown, setShowProviderDropdown] = useState(false)
+  const [showModelDropdown, setShowModelDropdown] = useState(false)
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false)
+  const [apiKey, setApiKey] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
     fetchProviders()
+    const savedKey = localStorage.getItem(`api_key_${selectedProvider}`)
+    setApiKey(savedKey || '')
   }, [])
 
   useEffect(() => {
     scrollToBottom()
   }, [messages])
 
+  useEffect(() => {
+    const providerData = providers.find(p => p.name === selectedProvider)
+    if (providerData && providerData.models.length > 0) {
+      setSelectedModel(providerData.models[0])
+    }
+    const savedKey = localStorage.getItem(`api_key_${selectedProvider}`)
+    setApiKey(savedKey || '')
+    setShowApiKeyInput(false)
+  }, [selectedProvider, providers])
+
   const fetchProviders = async () => {
     try {
       const response = await axios.get(`${API_URL}/providers`)
       setProviders(response.data.providers)
+      const defaultProv = response.data.providers.find((p: Provider) => p.name === 'openai')
+      if (defaultProv) {
+        setSelectedModel(defaultProv.models[0])
+      }
     } catch (error) {
       console.error('Failed to fetch providers:', error)
     }
+  }
+
+  const saveApiKey = () => {
+    localStorage.setItem(`api_key_${selectedProvider}`, apiKey)
+    setShowApiKeyInput(false)
+    // Optional: Sync with backend
+    axios.post(`${API_URL}/keys`, { provider: selectedProvider, key: apiKey }).catch(console.error)
   }
 
   const scrollToBottom = () => {
@@ -68,6 +98,8 @@ export default function ChatView() {
           { role: 'user', content: userMessage.content }
         ],
         provider: selectedProvider,
+        model: selectedModel,
+        apiKey: localStorage.getItem(`api_key_${selectedProvider}`)
       })
 
       const assistantMessage: Message = {
@@ -104,43 +136,125 @@ export default function ChatView() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <header className="px-6 py-4 border-b border-border bg-bg-secondary">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-semibold text-text-primary">AI Chat</h1>
-            <p className="text-sm text-text-muted font-arabic">المحادثة الذكية</p>
+      <header className="px-6 py-3 border-b border-border bg-bg-secondary">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex-shrink-0">
+            <h1 className="text-lg font-semibold text-text-primary">AI Chat</h1>
+            <p className="text-[10px] text-text-muted font-arabic leading-tight">المحادثة الذكية</p>
           </div>
           
-          {/* Provider Selector */}
-          <div className="relative">
-            <button
-              onClick={() => setShowProviderDropdown(!showProviderDropdown)}
-              className="flex items-center gap-2 px-4 py-2 bg-bg-elevated hover:bg-bg-tertiary border border-border rounded-lg transition-colors"
-            >
-              <div className={`w-2 h-2 rounded-full ${selectedProviderData?.available ? 'bg-accent-success' : 'bg-accent-error'}`}></div>
-              <span className="text-text-primary">{selectedProviderData?.displayName || selectedProvider}</span>
-              <ChevronDown size={16} className="text-text-muted" />
-            </button>
+          <div className="flex items-center gap-2 flex-1 justify-end">
+            {/* Provider Selector */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setShowProviderDropdown(!showProviderDropdown)
+                  setShowModelDropdown(false)
+                  setShowApiKeyInput(false)
+                }}
+                className="flex items-center gap-2 px-3 py-1.5 bg-bg-elevated hover:bg-bg-tertiary border border-border rounded-lg transition-colors text-sm"
+              >
+                {selectedProviderData?.type === 'cloud' ? <Globe size={14} className="text-accent-secondary" /> : <Cpu size={14} className="text-accent-success" />}
+                <span className="text-text-primary whitespace-nowrap">{selectedProviderData?.displayName || selectedProvider}</span>
+                <ChevronDown size={14} className="text-text-muted" />
+              </button>
+
+              {showProviderDropdown && (
+                <div className="absolute right-0 mt-2 w-48 bg-bg-secondary border border-border rounded-lg shadow-xl z-50 py-1">
+                  {providers.map((provider) => (
+                    <button
+                      key={provider.name}
+                      onClick={() => {
+                        setSelectedProvider(provider.name)
+                        setShowProviderDropdown(false)
+                      }}
+                      className={`w-full flex items-center gap-2 px-3 py-2 hover:bg-bg-elevated transition-colors text-sm ${
+                        selectedProvider === provider.name ? 'text-brand-eagle' : 'text-text-primary'
+                      }`}
+                    >
+                      {provider.type === 'cloud' ? <Globe size={12} /> : <Cpu size={12} />}
+                      <span>{provider.displayName}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Model Selector */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setShowModelDropdown(!showModelDropdown)
+                  setShowProviderDropdown(false)
+                  setShowApiKeyInput(false)
+                }}
+                disabled={!selectedProviderData?.models.length}
+                className="flex items-center gap-2 px-3 py-1.5 bg-bg-elevated hover:bg-bg-tertiary border border-border rounded-lg transition-colors text-sm disabled:opacity-50"
+              >
+                <span className="text-text-secondary whitespace-nowrap">{selectedModel || 'Select Model'}</span>
+                <ChevronDown size={14} className="text-text-muted" />
+              </button>
+
+              {showModelDropdown && selectedProviderData && (
+                <div className="absolute right-0 mt-2 w-56 bg-bg-secondary border border-border rounded-lg shadow-xl z-50 py-1 max-h-64 overflow-y-auto">
+                  {selectedProviderData.models.map((model) => (
+                    <button
+                      key={model}
+                      onClick={() => {
+                        setSelectedModel(model)
+                        setShowModelDropdown(false)
+                      }}
+                      className={`w-full text-left px-3 py-2 hover:bg-bg-elevated transition-colors text-sm ${
+                        selectedModel === model ? 'text-brand-eagle' : 'text-text-primary'
+                      }`}
+                    >
+                      {model}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* API Key Toggle */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setShowApiKeyInput(!showApiKeyInput)
+                  setShowProviderDropdown(false)
+                  setShowModelDropdown(false)
+                }}
+                className={`p-2 rounded-lg transition-colors border ${
+                  apiKey ? 'text-accent-success border-accent-success/30' : 'text-text-muted border-border hover:text-text-primary'
+                } bg-bg-elevated`}
+              >
+                <Key size={16} />
+              </button>
+
+              {showApiKeyInput && (
+                <div className="absolute right-0 mt-2 w-72 bg-bg-secondary border border-border rounded-lg shadow-xl z-50 p-3">
+                  <p className="text-xs text-text-muted mb-2">Enter {selectedProviderData?.displayName} API Key</p>
+                  <div className="flex gap-2">
+                    <input
+                      type="password"
+                      value={apiKey}
+                      onChange={(e) => setApiKey(e.target.value)}
+                      placeholder="sk-..."
+                      className="flex-1 bg-bg-elevated text-text-primary px-3 py-1.5 rounded border border-border text-sm focus:outline-none focus:ring-1 focus:ring-brand-eagle"
+                    />
+                    <button
+                      onClick={saveApiKey}
+                      className="px-3 py-1.5 bg-brand-eagle text-bg-primary rounded text-sm font-medium hover:bg-accent-primaryHover"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
             
-            {showProviderDropdown && (
-              <div className="absolute right-0 mt-2 w-56 bg-bg-secondary border border-border rounded-lg shadow-xl z-50">
-                {providers.map((provider) => (
-                  <button
-                    key={provider.name}
-                    onClick={() => {
-                      setSelectedProvider(provider.name)
-                      setShowProviderDropdown(false)
-                    }}
-                    className={`w-full flex items-center gap-2 px-4 py-2 hover:bg-bg-elevated transition-colors first:rounded-t-lg last:rounded-b-lg ${
-                      selectedProvider === provider.name ? 'bg-bg-elevated text-brand-eagle' : 'text-text-primary'
-                    }`}
-                  >
-                    <div className={`w-2 h-2 rounded-full ${provider.available ? 'bg-accent-success' : 'bg-accent-error'}`}></div>
-                    <span>{provider.displayName}</span>
-                  </button>
-                ))}
-              </div>
-            )}
+            <button className="p-2 rounded-lg text-text-muted hover:text-text-primary transition-colors bg-bg-elevated border border-border">
+              <Settings size={16} />
+            </button>
           </div>
         </div>
       </header>
