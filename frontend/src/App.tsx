@@ -31,8 +31,8 @@ function App() {
                 <img src={SyrianEagle} alt="Syrian Eagle" className="w-10 h-10" />
               </div>
               <div className="flex flex-col">
-                <span className="font-semibold text-text-primary text-sm font-arabic">الجمهورية العربية السورية</span>
-                <span className="text-xs text-text-muted">Syrian Arab Republic</span>
+                <span className="font-semibold text-text-primary text-sm font-arabic">AI Manus Unified v2.0</span>
+                <span className="text-xs text-text-muted">Enterprise Platform</span>
               </div>
             </div>
           )}
