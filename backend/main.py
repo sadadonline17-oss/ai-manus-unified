@@ -12,7 +12,6 @@ License: MIT
 from __future__ import annotations
 
 import logging
-import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import AsyncGenerator
@@ -52,7 +51,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     logger.info(f"Loaded {len(skill_registry.list_all())} skills")
     
     # Initialize workflow manager
-    from workflow.workflow_runner import workflow_manager
+    from workflow.workflow_runner import workflow_manager as _
     logger.info("Workflow manager initialized")
     
     logger.info("=" * 60)
@@ -168,7 +167,7 @@ async def health():
 # =============================================================================
 
 # Import and register workflow routes
-from api.workflow_routes import router as workflow_router, register_workflow_routes
+from api.workflow_routes import router as workflow_router
 
 app.include_router(workflow_router)
 
