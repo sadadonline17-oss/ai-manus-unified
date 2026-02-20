@@ -4,29 +4,47 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Catppuccin Mocha theme
-        base: {
-          DEFAULT: '#1e1e2e',
-          mantle: '#181825',
-          crust: '#11111b',
+        // Syrian Sovereign Emerald Theme
+        primary: {
+          DEFAULT: '#0F3D2E',
+          dark: '#0B2F24',
+        },
+        secondary: '#1C5C45',
+        accent: {
+          gold: '#C9A646',
+          softGold: '#E5C878',
+        },
+        background: '#071F18',
+        surface: 'rgba(15,61,46,0.90)',
+        glass: 'rgba(255,255,255,0.05)',
+        border: {
+          gold: 'rgba(201,166,70,0.30)',
+          soft: 'rgba(201,166,70,0.15)',
         },
         text: {
-          DEFAULT: '#cdd6f4',
-          muted: '#a6adc8',
-          subtle: '#6c7086',
+          primary: '#FFFFFF',
+          secondary: 'rgba(255,255,255,0.75)',
+          muted: 'rgba(255,255,255,0.5)',
         },
-        surface: {
-          DEFAULT: '#313244',
-          hover: '#45475a',
+        // Legacy support
+        base: {
+          DEFAULT: '#0F3D2E',
+          mantle: '#0B2F24',
+          crust: '#071F18',
         },
-        accent: {
-          blue: '#89b4fa',
-          green: '#a6e3a1',
-          yellow: '#f9e2af',
-          red: '#f38ba8',
-          purple: '#cba6f7',
-          teal: '#94e2d5',
-        },
+      },
+      backgroundImage: {
+        'main-gradient': 'linear-gradient(180deg, #0B2F24, #071F18)',
+        'gold-gradient': 'linear-gradient(90deg, #C9A646, #E5C878)',
+      },
+      borderRadius: {
+        'card': '22px',
+        'button': '14px',
+        'input': '14px',
+      },
+      boxShadow: {
+        'gold': '0 4px 14px rgba(201,166,70,0.4)',
+        'soft-dark': '0 4px 20px rgba(0,0,0,0.3)',
       },
     },
   },

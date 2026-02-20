@@ -9,6 +9,7 @@ import { logger } from 'hono/logger';
 import { prettyJSON } from 'hono/pretty-json';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
+import { serve } from '@hono/node-server';
 
 // Import all modules
 import './providers';
@@ -377,14 +378,14 @@ function startServer() {
   // Start orchestrator
   orchestrator.start();
   
-  // Start server
+  // Start server using Node.js
   console.log(`\n✅ Server ready at http://${HOST}:${PORT}`);
   console.log(`   API Documentation: http://${HOST}:${PORT}/health`);
   console.log(`   Providers: http://${HOST}:${PORT}/providers`);
   console.log(`   Tools: http://${HOST}:${PORT}/tools`);
   console.log(`   Models: http://${HOST}:${PORT}/models\n`);
   
-  return Bun.serve({
+  serve({
     port: PORT,
     hostname: HOST,
     fetch: app.fetch,

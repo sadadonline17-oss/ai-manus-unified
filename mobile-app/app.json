@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AI Manus Unified",
-    "slug": "ai-manus-unified",
+    "name": "AI Manus Syria",
+    "slug": "ai-manus-syria",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,18 +10,18 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#1e1e2e"
+      "backgroundColor": "#0B2F24"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.aimanus.unified"
+      "bundleIdentifier": "com.aimanus.syria"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#1e1e2e"
+        "backgroundColor": "#0B2F24"
       },
-      "package": "com.aimanus.unified",
+      "package": "com.aimanus.syria",
       "permissions": [
         "INTERNET",
         "ACCESS_NETWORK_STATE",
@@ -52,9 +52,21 @@
         "origin": false
       },
       "eas": {
-        "projectId": "ai-manus-unified"
+        "projectId": "ai-manus-syria"
+      },
+      "theme": {
+        "name": "Syrian Sovereign Emerald – New Identity Edition",
+        "country": "Syria",
+        "colors": {
+          "primary": "#0F3D2E",
+          "primaryDark": "#0B2F24",
+          "secondary": "#1C5C45",
+          "accentGold": "#C9A646",
+          "accentSoftGold": "#E5C878",
+          "background": "#071F18"
+        }
       }
     },
-    "owner": "ai-manus"
+    "owner": "ai-manus-syria"
   }
 }

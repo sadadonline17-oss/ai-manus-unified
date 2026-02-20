@@ -1,10 +1,9 @@
 /**
- * AI Manus Unified - Settings Screen
- * =====================================
+ * AI Manus Syria - Settings Screen
+ * ===================================
  * App settings and configuration.
  * 
- * @author AI Manus Unified Team
- * @license MIT
+ * @design Syrian Sovereign Emerald – New Identity Edition
  */
 
 import { useState } from 'react';
@@ -19,7 +18,14 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { IslamicPattern } from '../../components/IslamicPattern';
+import { SyrianEagle } from '../../components/SyrianEagle';
+import { Card, Button, Theme } from '../../components/ui';
+
+// Theme Colors
+const Colors = Theme.colors;
 
 interface SettingItem {
   icon: string;
@@ -55,9 +61,10 @@ export default function SettingsScreen() {
         style={styles.settingContent}
         onPress={item.onPress}
         disabled={item.type === 'toggle'}
+        activeOpacity={0.7}
       >
         <View style={styles.settingIconContainer}>
-          <Ionicons name={item.icon as any} size={22} color="#89b4fa" />
+          <Ionicons name={item.icon as any} size={22} color={Colors.accentGold} />
         </View>
         <View style={styles.settingInfo}>
           <Text style={styles.settingLabel}>{item.label}</Text>
@@ -69,12 +76,12 @@ export default function SettingsScreen() {
           <Switch
             value={item.value}
             onValueChange={item.onPress}
-            trackColor={{ false: '#45475a', true: '#89b4fa' }}
-            thumbColor="#cdd6f4"
+            trackColor={{ false: 'rgba(255,255,255,0.1)', true: Colors.accentGold }}
+            thumbColor={Colors.textPrimary}
           />
         )}
         {item.type === 'link' && (
-          <Ionicons name="chevron-forward" size={20} color="#6c7086" />
+          <Ionicons name="chevron-forward" size={20} color={Colors.textMuted} />
         )}
       </TouchableOpacity>
     </Animated.View>
@@ -197,84 +204,144 @@ export default function SettingsScreen() {
   ];
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Settings</Text>
-      </View>
+    <View style={styles.container}>
+      {/* Background Pattern */}
+      <IslamicPattern opacity={0.03} color={Colors.accentGold} />
+      
+      <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+        {/* Header */}
+        <LinearGradient
+          colors={[Colors.primaryDark, Colors.primary]}
+          style={styles.header}
+        >
+          <Text style={styles.headerTitle}>Settings</Text>
+        </LinearGradient>
 
-      {/* Settings List */}
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-      >
-        {settingsSections.map((section, sectionIndex) => (
-          <View key={section.title} style={styles.section}>
-            <Text style={styles.sectionTitle}>{section.title}</Text>
-            <View style={styles.sectionContent}>
-              {section.items.map((item, itemIndex) =>
-                renderSettingItem(item, sectionIndex * 10 + itemIndex)
-              )}
+        {/* Settings List */}
+        <ScrollView
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* App Info Card */}
+          <Card style={styles.appInfoCard}>
+            <View style={styles.appInfoContent}>
+              <SyrianEagle size={60} color={Colors.accentGold} />
+              <View style={styles.appInfoText}>
+                <Text style={styles.appName}>AI Manus Syria</Text>
+                <Text style={styles.appTagline}>Syrian Sovereign Emerald</Text>
+                <Text style={styles.appVersion}>Version 1.0.0</Text>
+              </View>
             </View>
+          </Card>
+
+          {settingsSections.map((section, sectionIndex) => (
+            <View key={section.title} style={styles.section}>
+              <Text style={styles.sectionTitle}>{section.title}</Text>
+              <View style={styles.sectionContent}>
+                {section.items.map((item, itemIndex) =>
+                  renderSettingItem(item, sectionIndex * 10 + itemIndex)
+                )}
+              </View>
+            </View>
+          ))}
+
+          {/* Sign Out Button */}
+          <TouchableOpacity style={styles.signOutButton} activeOpacity={0.7}>
+            <Ionicons name="log-out" size={20} color="#f38ba8" />
+            <Text style={styles.signOutText}>Sign Out</Text>
+          </TouchableOpacity>
+
+          {/* Footer */}
+          <View style={styles.footer}>
+            <View style={styles.footerDivider}>
+              <LinearGradient
+                colors={['transparent', Colors.accentGold, 'transparent']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.footerDividerLine}
+              />
+            </View>
+            <Text style={styles.footerText}>AI Manus Syria v1.0.0</Text>
+            <Text style={styles.footerSubtext}>Syrian Arab Republic 🇸🇾</Text>
+            <Text style={styles.footerSubtext}>Made with ❤️ for AI enthusiasts</Text>
           </View>
-        ))}
-
-        {/* Sign Out Button */}
-        <TouchableOpacity style={styles.signOutButton}>
-          <Ionicons name="log-out" size={20} color="#f38ba8" />
-          <Text style={styles.signOutText}>Sign Out</Text>
-        </TouchableOpacity>
-
-        {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>AI Manus Unified v1.0.0</Text>
-          <Text style={styles.footerSubtext}>Made with ❤️ for AI enthusiasts</Text>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#11111b',
+    backgroundColor: Colors.background,
+  },
+  safeArea: {
+    flex: 1,
   },
   header: {
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#313244',
-    backgroundColor: '#1e1e2e',
+    borderBottomColor: 'rgba(201,166,70,0.15)',
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#cdd6f4',
+    color: Colors.accentSoftGold,
   },
   scrollView: {
     flex: 1,
   },
+  appInfoCard: {
+    margin: 16,
+    marginBottom: 8,
+  },
+  appInfoContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  appInfoText: {
+    marginLeft: 16,
+    flex: 1,
+  },
+  appName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: Colors.textPrimary,
+  },
+  appTagline: {
+    fontSize: 13,
+    color: Colors.accentGold,
+    marginTop: 2,
+  },
+  appVersion: {
+    fontSize: 12,
+    color: Colors.textMuted,
+    marginTop: 4,
+  },
   section: {
-    marginTop: 24,
+    marginTop: 20,
     paddingHorizontal: 16,
   },
   sectionTitle: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#6c7086',
+    color: Colors.textMuted,
     textTransform: 'uppercase',
     marginBottom: 8,
     marginLeft: 4,
   },
   sectionContent: {
-    backgroundColor: '#1e1e2e',
-    borderRadius: 12,
+    backgroundColor: Colors.surface,
+    borderRadius: 16,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(201,166,70,0.15)',
   },
   settingItem: {
     borderBottomWidth: 1,
-    borderBottomColor: '#313244',
+    borderBottomColor: 'rgba(201,166,70,0.10)',
   },
   settingContent: {
     flexDirection: 'row',
@@ -282,10 +349,10 @@ const styles = StyleSheet.create({
     padding: 14,
   },
   settingIconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    backgroundColor: '#313244',
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    backgroundColor: 'rgba(201,166,70,0.15)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -296,23 +363,25 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#cdd6f4',
+    color: Colors.textPrimary,
   },
   settingDescription: {
     fontSize: 12,
-    color: '#6c7086',
+    color: Colors.textSecondary,
     marginTop: 2,
   },
   signOutButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1e1e2e',
+    backgroundColor: Colors.surface,
     marginHorizontal: 16,
     marginTop: 24,
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 16,
     gap: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(243,139,168,0.30)',
   },
   signOutText: {
     fontSize: 15,
@@ -323,13 +392,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 24,
   },
+  footerDivider: {
+    width: '60%',
+    marginBottom: 16,
+  },
+  footerDividerLine: {
+    height: 1,
+    width: '100%',
+  },
   footerText: {
     fontSize: 14,
-    color: '#6c7086',
+    color: Colors.textSecondary,
   },
   footerSubtext: {
     fontSize: 12,
-    color: '#45475a',
+    color: Colors.textMuted,
     marginTop: 4,
   },
 });

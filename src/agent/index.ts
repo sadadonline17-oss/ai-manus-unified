@@ -3,6 +3,8 @@
  * Main entry point for agent functionality
  */
 
-export * from './base';
 export { BaseAgent, AgentFactory } from './base';
+export * from './base';
+
+import { BaseAgent } from './base';
 export default BaseAgent;

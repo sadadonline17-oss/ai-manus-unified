@@ -1,10 +1,9 @@
 /**
- * AI Manus Unified - Chat Screen
- * =================================
+ * AI Manus Syria - Chat Screen
+ * ==============================
  * Main AI chat interface with provider selection.
  * 
- * @author AI Manus Unified Team
- * @license MIT
+ * @design Syrian Sovereign Emerald – New Identity Edition
  */
 
 import { useState, useRef, useEffect } from 'react';
@@ -22,7 +21,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp, FadeInDown } from 'react-native-reanimated';
+import { IslamicPattern } from '../../components/IslamicPattern';
+import { Card, Button, Theme } from '../../components/ui';
+
+// Theme Colors
+const Colors = Theme.colors;
 
 // Types
 interface Message {
@@ -142,6 +147,7 @@ export default function ChatScreen() {
               setSelectedProvider(provider);
               setShowProviders(false);
             }}
+            activeOpacity={0.7}
           >
             <Text style={styles.providerIcon}>{provider.icon}</Text>
             <Text style={styles.providerName}>{provider.name}</Text>
@@ -152,90 +158,103 @@ export default function ChatScreen() {
   );
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.providerSelectorButton}
-          onPress={() => setShowProviders(!showProviders)}
+    <View style={styles.container}>
+      {/* Background Pattern */}
+      <IslamicPattern opacity={0.03} color={Colors.accentGold} />
+      
+      <SafeAreaView style={styles.safeArea} edges={['bottom']}>
+        {/* Header */}
+        <LinearGradient
+          colors={[Colors.primaryDark, Colors.primary]}
+          style={styles.header}
         >
-          <Text style={styles.providerSelectorIcon}>{selectedProvider.icon}</Text>
-          <Text style={styles.providerSelectorText}>{selectedProvider.name}</Text>
-          <Ionicons
-            name={showProviders ? 'chevron-up' : 'chevron-down'}
-            size={16}
-            color="#cdd6f4"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.clearButton}>
-          <Ionicons name="trash-outline" size={20} color="#f38ba8" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Provider Selector */}
-      {showProviders && renderProviderSelector()}
-
-      {/* Messages */}
-      <KeyboardAvoidingView
-        style={styles.messagesContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={90}
-      >
-        {messages.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyIcon}>💬</Text>
-            <Text style={styles.emptyTitle}>Start a Conversation</Text>
-            <Text style={styles.emptySubtitle}>
-              Choose an AI provider and send a message to begin
-            </Text>
-          </View>
-        ) : (
-          <FlatList
-            ref={flatListRef}
-            data={messages}
-            renderItem={renderMessage}
-            keyExtractor={item => item.id}
-            contentContainerStyle={styles.messagesList}
-            showsVerticalScrollIndicator={false}
-          />
-        )}
-
-        {/* Input */}
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Type a message..."
-            placeholderTextColor="#6c7086"
-            value={inputText}
-            onChangeText={setInputText}
-            multiline
-            maxLength={4000}
-            editable={!isLoading}
-          />
           <TouchableOpacity
-            style={[
-              styles.sendButton,
-              (!inputText.trim() || isLoading) && styles.sendButtonDisabled,
-            ]}
-            onPress={sendMessage}
-            disabled={!inputText.trim() || isLoading}
+            style={styles.providerSelectorButton}
+            onPress={() => setShowProviders(!showProviders)}
+            activeOpacity={0.7}
           >
-            {isLoading ? (
-              <ActivityIndicator color="#1e1e2e" size="small" />
-            ) : (
-              <Ionicons name="send" size={20} color="#1e1e2e" />
-            )}
+            <Text style={styles.providerSelectorIcon}>{selectedProvider.icon}</Text>
+            <Text style={styles.providerSelectorText}>{selectedProvider.name}</Text>
+            <Ionicons
+              name={showProviders ? 'chevron-up' : 'chevron-down'}
+              size={16}
+              color={Colors.accentSoftGold}
+            />
           </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          <TouchableOpacity style={styles.clearButton}>
+            <Ionicons name="trash-outline" size={20} color="#f38ba8" />
+          </TouchableOpacity>
+        </LinearGradient>
+
+        {/* Provider Selector */}
+        {showProviders && renderProviderSelector()}
+
+        {/* Messages */}
+        <KeyboardAvoidingView
+          style={styles.messagesContainer}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          keyboardVerticalOffset={90}
+        >
+          {messages.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyIcon}>💬</Text>
+              <Text style={styles.emptyTitle}>Start a Conversation</Text>
+              <Text style={styles.emptySubtitle}>
+                Choose an AI provider and send a message to begin
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              ref={flatListRef}
+              data={messages}
+              renderItem={renderMessage}
+              keyExtractor={item => item.id}
+              contentContainerStyle={styles.messagesList}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
+
+          {/* Input */}
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Type a message..."
+              placeholderTextColor={Colors.textMuted}
+              value={inputText}
+              onChangeText={setInputText}
+              multiline
+              maxLength={4000}
+              editable={!isLoading}
+            />
+            <TouchableOpacity
+              style={[
+                styles.sendButton,
+                (!inputText.trim() || isLoading) && styles.sendButtonDisabled,
+              ]}
+              onPress={sendMessage}
+              disabled={!inputText.trim() || isLoading}
+              activeOpacity={0.7}
+            >
+              {isLoading ? (
+                <ActivityIndicator color={Colors.primary} size="small" />
+              ) : (
+                <Ionicons name="send" size={20} color={Colors.primary} />
+              )}
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#11111b',
+    backgroundColor: Colors.background,
+  },
+  safeArea: {
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
@@ -244,23 +263,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#313244',
-    backgroundColor: '#1e1e2e',
+    borderBottomColor: 'rgba(201,166,70,0.15)',
   },
   providerSelectorButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#313244',
+    backgroundColor: 'rgba(255,255,255,0.05)',
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 8,
+    borderRadius: 10,
     gap: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(201,166,70,0.20)',
   },
   providerSelectorIcon: {
     fontSize: 18,
   },
   providerSelectorText: {
-    color: '#cdd6f4',
+    color: Colors.accentSoftGold,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -268,13 +288,13 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   providerSelector: {
-    backgroundColor: '#1e1e2e',
+    backgroundColor: Colors.primaryDark,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#313244',
+    borderBottomColor: 'rgba(201,166,70,0.15)',
   },
   providerSelectorTitle: {
-    color: '#a6adc8',
+    color: Colors.textSecondary,
     fontSize: 12,
     fontWeight: '600',
     paddingHorizontal: 16,
@@ -284,22 +304,22 @@ const styles = StyleSheet.create({
   providerButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#313244',
+    backgroundColor: 'rgba(255,255,255,0.05)',
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 8,
+    borderRadius: 10,
     marginHorizontal: 4,
     gap: 6,
     borderWidth: 2,
   },
   providerButtonActive: {
-    backgroundColor: '#45475a',
+    backgroundColor: 'rgba(201,166,70,0.15)',
   },
   providerIcon: {
     fontSize: 16,
   },
   providerName: {
-    color: '#cdd6f4',
+    color: Colors.textPrimary,
     fontSize: 13,
     fontWeight: '500',
   },
@@ -323,12 +343,12 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#cdd6f4',
+    color: Colors.textPrimary,
     marginBottom: 8,
   },
   emptySubtitle: {
     fontSize: 14,
-    color: '#6c7086',
+    color: Colors.textSecondary,
     textAlign: 'center',
   },
   messageContainer: {
@@ -352,32 +372,34 @@ const styles = StyleSheet.create({
   },
   assistantName: {
     fontSize: 12,
-    color: '#89b4fa',
+    color: Colors.accentGold,
     fontWeight: '600',
   },
   messageBubble: {
-    padding: 12,
-    borderRadius: 16,
+    padding: 14,
+    borderRadius: 18,
   },
   userBubble: {
-    backgroundColor: '#89b4fa',
+    backgroundColor: Colors.accentGold,
     borderBottomRightRadius: 4,
   },
   assistantBubble: {
-    backgroundColor: '#313244',
+    backgroundColor: Colors.surface,
     borderBottomLeftRadius: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(201,166,70,0.15)',
   },
   messageText: {
     fontSize: 15,
     lineHeight: 22,
-    color: '#cdd6f4',
+    color: Colors.textPrimary,
   },
   userMessageText: {
-    color: '#1e1e2e',
+    color: Colors.primary,
   },
   timestamp: {
     fontSize: 10,
-    color: '#6c7086',
+    color: Colors.textMuted,
     marginTop: 4,
     alignSelf: 'flex-end',
   },
@@ -386,29 +408,38 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     padding: 12,
     gap: 8,
-    backgroundColor: '#1e1e2e',
+    backgroundColor: Colors.primaryDark,
     borderTopWidth: 1,
-    borderTopColor: '#313244',
+    borderTopColor: 'rgba(201,166,70,0.15)',
   },
   textInput: {
     flex: 1,
-    backgroundColor: '#313244',
+    backgroundColor: 'rgba(255,255,255,0.06)',
     borderRadius: 20,
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 12,
     fontSize: 15,
-    color: '#cdd6f4',
+    color: Colors.textPrimary,
     maxHeight: 120,
+    borderWidth: 1,
+    borderColor: 'rgba(201,166,70,0.15)',
   },
   sendButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#89b4fa',
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: Colors.accentGold,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: Colors.accentGold,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 14,
+    elevation: 6,
   },
   sendButtonDisabled: {
-    backgroundColor: '#45475a',
+    backgroundColor: 'rgba(201,166,70,0.3)',
+    shadowOpacity: 0,
+    elevation: 0,
   },
 });
