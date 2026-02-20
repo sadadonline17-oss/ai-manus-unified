@@ -1,0 +1,200 @@
+# ============================================================================
+# AI Manus Unified - Docker Compose
+# Complete stack for the AI Agent Enterprise Platform
+# ============================================================================
+
+version: '3.8'
+
+services:
+  # ==========================================================================
+  # Main Application
+  # ==========================================================================
+  ai-manus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: ai-manus-unified
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - MONGODB_URI=mongodb://mongodb:27017
+      - MONGODB_DATABASE=manus
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    env_file:
+      - .env
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - manus-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+
+  # ==========================================================================
+  # MongoDB Database
+  # ==========================================================================
+  mongodb:
+    image: mongo:7.0-jammy
+    container_name: ai-manus-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=manus
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - manus-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 256M
+
+  # ==========================================================================
+  # Redis Cache
+  # ==========================================================================
+  redis:
+    image: redis:7.2-alpine
+    container_name: ai-manus-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - manus-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+
+  # ==========================================================================
+  # Sandbox Service (for code execution)
+  # ==========================================================================
+  sandbox:
+    image: docker:dind
+    container_name: ai-manus-sandbox
+    restart: unless-stopped
+    privileged: true
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+    volumes:
+      - sandbox_certs:/certs
+      - sandbox_data:/var/lib/docker
+    networks:
+      - manus-network
+    healthcheck:
+      test: ["CMD", "docker", "info"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ==========================================================================
+  # Ollama (Local LLM)
+  # ==========================================================================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ai-manus-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - manus-network
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 2G
+    # Uncomment for GPU support
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # ==========================================================================
+  # Nginx Reverse Proxy (Optional - for production)
+  # ==========================================================================
+  nginx:
+    image: nginx:alpine
+    container_name: ai-manus-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx_ssl:/etc/nginx/ssl
+    depends_on:
+      - ai-manus
+    networks:
+      - manus-network
+    profiles:
+      - production
+
+# ============================================================================
+# Networks
+# ============================================================================
+networks:
+  manus-network:
+    driver: bridge
+    name: manus-network
+
+# ============================================================================
+# Volumes
+# ============================================================================
+volumes:
+  mongodb_data:
+    name: ai-manus-mongodb-data
+  mongodb_config:
+    name: ai-manus-mongodb-config
+  redis_data:
+    name: ai-manus-redis-data
+  sandbox_certs:
+    name: ai-manus-sandbox-certs
+  sandbox_data:
+    name: ai-manus-sandbox-data
+  ollama_data:
+    name: ai-manus-ollama-data
+  nginx_ssl:
+    name: ai-manus-nginx-ssl
