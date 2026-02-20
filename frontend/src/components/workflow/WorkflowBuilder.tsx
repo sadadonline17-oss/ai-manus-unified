@@ -26,6 +26,7 @@ import ReactFlow, {
   ConnectionMode,
   ReactFlowProvider,
   useReactFlow,
+  NodeProps,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
@@ -82,7 +83,7 @@ interface WorkflowBuilderProps {
 // Custom Node Component
 // =============================================================================
 
-const SkillNode: React.FC<{ data: WorkflowNodeData; selected?: boolean }> = ({ 
+const SkillNode: React.FC<NodeProps<WorkflowNodeData>> = ({
   data, 
   selected 
 }) => {

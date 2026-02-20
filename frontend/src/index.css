@@ -154,7 +154,7 @@ body {
 /* Syrian Shell Layout */
 @layer components {
   .syrian-shell {
-    @apply relative bg-bg-primary text-text-primary min-h-screen flex flex-col;
+    @apply relative bg-bg-primary text-text-primary min-h-screen flex flex-row;
   }
 
   .syrian-shell::before,

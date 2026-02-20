@@ -56,6 +56,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     supervisor \
+    nginx \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Playwright for browser automation

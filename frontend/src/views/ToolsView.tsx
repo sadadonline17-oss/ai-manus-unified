@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Terminal, FileText, Globe, Search, Play, Loader2 } from 'lucide-react'
 import axios from 'axios'
 
-const API_URL = 'http://localhost:8000'
+const API_URL = '/api'
 
 interface Tool {
   name: string

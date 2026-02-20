@@ -22,7 +22,7 @@ function App() {
   return (
     <div className="flex h-screen bg-bg-primary text-text-primary syrian-shell">
       {/* Sidebar */}
-      <aside className={`${sidebarOpen ? 'w-64' : 'w-16'} bg-bg-secondary border-r border-border transition-all duration-300 flex flex-col`}>
+      <aside className={`${sidebarOpen ? 'w-64' : 'w-16'} h-screen bg-bg-secondary border-r border-border transition-all duration-300 flex flex-col`}>
         {/* Logo */}
         <div className="p-4 border-b border-border flex items-center justify-between">
           {sidebarOpen && (

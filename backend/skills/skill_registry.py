@@ -10,14 +10,13 @@ License: MIT
 
 from __future__ import annotations
 
-import asyncio
 import json
 import logging
 import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Type, Union
+from typing import Any, Dict, List, Optional, Type
 from pathlib import Path
 import subprocess
 import tempfile
@@ -251,7 +250,7 @@ class DynamicPlannerSkill(BaseSkill):
             
             # Get inputs
             previous_outputs = context.inputs.get("context", context.previous_outputs)
-            decision_criteria = context.inputs.get(
+            _decision_criteria = context.inputs.get(
                 "decision_criteria", 
                 "Choose the optimal path based on the context"
             )
@@ -351,7 +350,6 @@ class DataExtractorSkill(BaseSkill):
     
     async def execute(self, context: SkillExecutionContext) -> SkillExecutionResult:
         import time
-        import re
         start_time = time.time()
         logs = []
         
@@ -370,7 +368,7 @@ class DataExtractorSkill(BaseSkill):
             for field_name, field_def in extraction_schema.items():
                 if isinstance(field_def, dict):
                     pattern = field_def.get("pattern")
-                    field_type = field_def.get("type", "string")
+                    _field_type = field_def.get("type", "string")
                     
                     if pattern:
                         matches = re.findall(pattern, input_text)
@@ -466,7 +464,7 @@ class DocumentSummarizerSkill(BaseSkill):
             
             document = context.inputs.get("document", "")
             max_length = context.inputs.get("max_length", 200)
-            style = context.inputs.get("style", "concise")
+            _style = context.inputs.get("style", "concise")
             
             logs.append(f"[Document Summarizer] Processing document ({len(document)} chars)")
             
@@ -589,7 +587,7 @@ class BrowserOperatorSkill(BaseSkill):
             
             url = context.inputs.get("url", "")
             actions = context.inputs.get("actions", [])
-            extract_selector = context.inputs.get("extract_selector")
+            _extract_selector = context.inputs.get("extract_selector")
             take_screenshot = context.inputs.get("screenshot", False)
             
             logs.append(f"[Browser Operator] Navigating to: {url}")
@@ -831,7 +829,7 @@ class HTTPRequestSkill(BaseSkill):
                     
                     try:
                         response_body = await response.json()
-                    except:
+                    except Exception:
                         response_body = await response.text()
             
             duration_ms = int((time.time() - start_time) * 1000)
@@ -934,7 +932,7 @@ class PythonSandboxSkill(BaseSkill):
             
             code = context.inputs.get("code", "")
             input_data = context.inputs.get("input_data", {})
-            requirements = context.inputs.get("requirements", [])
+            _requirements = context.inputs.get("requirements", [])
             timeout = context.inputs.get("timeout", 60)
             
             logs.append(f"[Python Sandbox] Executing code ({len(code)} chars)")
@@ -965,7 +963,7 @@ class PythonSandboxSkill(BaseSkill):
                 # Try to parse result from stdout
                 try:
                     result_data = json.loads(stdout.strip().split('\n')[-1])
-                except:
+                except Exception:
                     result_data = {"output": stdout}
                 
             finally:
@@ -988,7 +986,7 @@ class PythonSandboxSkill(BaseSkill):
             )
             
         except subprocess.TimeoutExpired:
-            logs.append(f"[Python Sandbox] Execution timed out")
+            logs.append("[Python Sandbox] Execution timed out")
             return SkillExecutionResult(
                 status=SkillStatus.FAILED,
                 error="Execution timed out",
@@ -1112,7 +1110,7 @@ class BashCommanderSkill(BaseSkill):
             )
             
         except subprocess.TimeoutExpired:
-            logs.append(f"[Bash Commander] Execution timed out")
+            logs.append("[Bash Commander] Execution timed out")
             return SkillExecutionResult(
                 status=SkillStatus.FAILED,
                 error="Execution timed out",
