@@ -48,6 +48,8 @@ coverage/
 .cache/
 .parcel-cache/
 .eslintcache
+__pycache__/
+*.py[cod]
 
 # Temporary files
 tmp/
